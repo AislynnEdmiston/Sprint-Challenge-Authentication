@@ -46,6 +46,8 @@ Demonstrate your understanding of this week's concepts by answering the followin
 
 - [ ] What are the three parts of the JSON Web Token?
 
+    the header, payload, and the verify signature
+
 ## Minimum Viable Product
 
 Implement an User Authentication System. Hash user's passwords before saving them to the database. Use `JSON Web Tokens` or `Sessions and Cookies` to persist authentication across requests.
