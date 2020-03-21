@@ -9,7 +9,7 @@ router.post('/register', async (req, res, next) => {
         const { username } = req.body
         const password = await bcrypt.hashSync(req.body.password, 13)
 
-        console.log(password)
+        console.log(hash)
         console.log({username})
         const user = await db("users").select("id", "username", "password").where({ username })
         
