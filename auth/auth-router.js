@@ -7,11 +7,12 @@ const db = require("../database/dbConfig")
 router.post('/register', async (req, res, next) => {
     try {
         const { username } = req.body
-        const password = req.body.password
+        const password = await bcrypt.hashSync(req.body.password, 13)
 
+        console.log(password)
         console.log({username})
         const user = await db("users").select("id", "username", "password").where({ username })
-        const hash = await bcrypt.hash(password, 13)
+        
         console.log(req.body)
         if (user === { username }) {
             return res.status(409).json({
@@ -19,7 +20,7 @@ router.post('/register', async (req, res, next) => {
             })
         }
 
-        res.status(201).json(await db("users").insert(user))
+        res.status(201).json(await db("users").insert(req.body))
     } catch (err) {
         console.log(err)
         next(err)
