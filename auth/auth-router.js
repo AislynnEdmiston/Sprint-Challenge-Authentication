@@ -7,20 +7,20 @@ const db = require("../database/dbConfig")
 router.post('/register', async (req, res, next) => {
     try {
         const { username } = req.body
-        const password = await bcrypt.hashSync(req.body.password, 13)
+        const credentials = req.body
 
-        console.log(hash)
-        console.log({username})
+        const hash = bcrypt.hashSync(credentials.password, 12)
+        credentials.password = hash
+
         const user = await db("users").select("id", "username", "password").where({ username })
         
-        console.log(req.body)
         if (user === { username }) {
             return res.status(409).json({
                 message: "The username is already taken please try again"
             })
         }
 
-        res.status(201).json(await db("users").insert(req.body))
+        res.status(201).json(await db("users").insert(credentials))
     } catch (err) {
         console.log(err)
         next(err)
