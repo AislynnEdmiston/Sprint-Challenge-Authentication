@@ -27,8 +27,26 @@ router.post('/register', async (req, res, next) => {
     }
 });
 
-router.post('/login', (req, res) => {
-  // implement login
+router.post('/login', async (req, res, next) => {
+    try {
+        const { username, password } = req.body
+        const user = await db("users").select("id", "username", "password").where({username}).first()
+
+        const passValid = await bcrypt.compare(password, user.password)
+
+        if(!user || !passValid) {
+            return res.status(401).json({
+                message: "Invalid credentials"
+            })
+        }
+
+        res.status(200).json({
+            message: `Welcome ${user.username}`
+        })
+    } catch (err) {
+        console.log(err)
+        next(err)
+    }
 });
 
 module.exports = router;
