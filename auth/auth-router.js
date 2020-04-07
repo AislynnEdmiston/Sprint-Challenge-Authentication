@@ -1,10 +1,10 @@
 const router = require('express').Router();
 const bcrypt = require("bcryptjs")
-const jwt = require("jsonwebtoken")
+// const jwt = require("jsonwebtoken")
 const db = require("../database/dbConfig")
-const restrict = require("./authenticate-middleware")
 
-// const Users = require("./user-model")
+
+const Users = require("./user-model")
 
 router.post('/register', async (req, res, next) => {
     try {
@@ -32,8 +32,8 @@ router.post('/register', async (req, res, next) => {
 router.post('/login', async (req, res, next) => {
     try {
         const { username, password } = req.body
-        const user = await db("users").select("id", "username", "password").where({username}).first()
-
+        const user = await Users.findBy({username}).first()
+        // console.log("user", user)
         const passValid = await bcrypt.compare(password, user.password)
 
         if(!user || !passValid) {
@@ -42,15 +42,9 @@ router.post('/login', async (req, res, next) => {
             })
         }
 
-        const payload = {
-            userId: user.id
-        }
+        req.session.user = user
 
-        const token = jwt.sign(payload, process.JWT_SECRET)
-
-        Response.cookie("token", token)
-
-        res.status(200).json({
+        res.json({
             message: `Welcome ${user.username}`
         })
     } catch (err) {

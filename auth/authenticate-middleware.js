@@ -1,31 +1,27 @@
-const jwt = require("jsonwebtoken")
+// const jwt = require("jsonwebtoken")
+const db = require("../database/dbConfig")
+const bcrypt = require("bcryptjs")
+
+
 
 function restrict() {
-  const authErr = {
-    message: "invalid credentials",
-  }
+  
+    const authErr = {
+      message: "invalid credentials",
+    }
 
-  return async (req, res, next) => {
-    try {
-      const { token } = req.cookies
-
-      if(!token) {
-        return res.status(401).json(authErr)
-      }
-
-      jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-        if (err) {
+    return async (req, res, next) => {
+      try {
+        
+        if(!req.session || !req.session.user){
           return res.status(401).json(authErr)
         }
 
-        req.token = decoded
-
         next()
-      })
-    } catch (err) {
-      next(err)
+      } catch (error) {
+        next(error)
+      }
     }
-  }
 }
 
 module.exports = restrict

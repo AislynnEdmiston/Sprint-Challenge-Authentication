@@ -13,9 +13,10 @@ async function find() {
     return db("users").select("id", "username")
 }
 
-async function findBy(filter) {
-    console.log("here")
-    return db("users").select("username", "password").where(filter)
+function findBy(filter) {
+	return db("users")
+		.select("id", "username", "password")
+		.where(filter);
 }
 
 async function findById(id) {
