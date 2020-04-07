@@ -29,28 +29,23 @@ router.post('/register', async (req, res, next) => {
     }
 });
 
-router.post('/login', async (req, res, next) => {
-    try {
-        const { username, password } = req.body
-        const user = await Users.findBy({username}).first()
-        // console.log("user", user)
-        const passValid = await bcrypt.compare(password, user.password)
-
-        if(!user || !passValid) {
-            return res.status(401).json({
-                message: "Invalid credentials"
-            })
-        }
-
-        req.session.user = user
-
-        res.json({
-            message: `Welcome ${user.username}`
-        })
-    } catch (err) {
-        console.log(err)
-        next(err)
-    }
+router.post("/login", async (req, res, next) => {
+	try {
+		const { username, password } = req.body;
+		const user = await Users.findBy({ username }).first();
+		const passwordValid = await bcrypt.compare(password, user.password);
+		if (!user || !passwordValid) {
+			return res.status(401).json({
+				message: "Invalid Credentials"
+			});
+		}
+		req.session.user = user;
+		res.json({
+			message: `Welcome ${user.username}!`
+		});
+	} catch (err) {
+		next(err);
+	}
 });
 
 module.exports = router;

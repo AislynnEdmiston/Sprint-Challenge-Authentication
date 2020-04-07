@@ -1,29 +1,53 @@
+module.exports = (req, res, next) => {
+	const sessions = {};
+	const authError = {
+		message: "invalid credentials"
+	};
+
+		if (!req.session || !req.session.user) {
+			return res.status(401).json(authError);
+		}
+
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
 // const jwt = require("jsonwebtoken")
-const db = require("../database/dbConfig")
-const bcrypt = require("bcryptjs")
+// const db = require("../database/dbConfig")
+// const bcrypt = require("bcryptjs")
 
 
 
-function restrict() {
+// function restrict() {
   
-    const authErr = {
-      message: "invalid credentials",
-    }
+//     const authErr = {
+//       message: "invalid credentials",
+//     }
 
-    return async (req, res, next) => {
-      try {
+//     return async (req, res, next) => {
+//       try {
         
-        if(!req.session || !req.session.user){
-          return res.status(401).json(authErr)
-        }
+//         if(!req.session || !req.session.user){
+//           return res.status(401).json(authErr)
+//         }
 
-        next()
-      } catch (error) {
-        next(error)
-      }
-    }
-}
+//         next()
+//       } catch (error) {
+//         next(error)
+//       }
+//     }
+// }
 
-module.exports = restrict
+// module.exports = restrict
 
 
