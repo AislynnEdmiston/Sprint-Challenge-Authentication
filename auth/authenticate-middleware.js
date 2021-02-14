@@ -1,8 +1,53 @@
-/* 
-  complete the middleware code to check if the user is logged in
-  before granting access to the next middleware/route handler
-*/
-
 module.exports = (req, res, next) => {
-  res.status(401).json({ you: 'shall not pass!' });
+	const sessions = {};
+	const authError = {
+		message: "invalid credentials"
+	};
+
+		if (!req.session || !req.session.user) {
+			return res.status(401).json(authError);
+		}
+
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const jwt = require("jsonwebtoken")
+// const db = require("../database/dbConfig")
+// const bcrypt = require("bcryptjs")
+
+
+
+// function restrict() {
+  
+//     const authErr = {
+//       message: "invalid credentials",
+//     }
+
+//     return async (req, res, next) => {
+//       try {
+        
+//         if(!req.session || !req.session.user){
+//           return res.status(401).json(authErr)
+//         }
+
+//         next()
+//       } catch (error) {
+//         next(error)
+//       }
+//     }
+// }
+
+// module.exports = restrict
+
+
